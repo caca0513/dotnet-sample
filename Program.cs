@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -14,12 +15,30 @@ namespace dotnet_sample
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            var envs = System.Environment.GetEnvironmentVariables();
+            int port = 0;
+            if (envs.Contains("APP_PORT"))
+                port = int.Parse(envs["APP_PORT"].ToString());
+
+            BuildWebHost(args, port).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHost BuildWebHost(string[] args, int port) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
+                   .UseKestrel(options =>
+                   {
+                       if (port != 0)
+                       //just need to setup the port, no need for IP
+                       {
+                           options.ListenAnyIP(port);
+                       }
+                   })
+                   .UseStartup<Startup>()
+                   .ConfigureLogging(logging =>
+                   {
+                       logging.AddConsole();
+                       logging.AddDebug();
+                   })
+                   .Build();
     }
 }
