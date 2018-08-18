@@ -34,6 +34,12 @@ namespace dotnet_sample
                 app.UseDeveloperExceptionPage();
             }
 
+            //map all request to /pathBase to /
+            var pathBase = Configuration.GetValue<string>("PathBase");
+            if (!string.IsNullOrEmpty(pathBase))
+                app.UsePathBase($"/{pathBase}");
+
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

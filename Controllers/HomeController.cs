@@ -11,6 +11,7 @@ namespace dotnet_sample.Controllers
         public IActionResult Index()
         {
             ViewBag.Title = "App Runner Dotnet Core Sample";
+            ViewBag.PathBase = Request.PathBase;
             return View();
         }
     }

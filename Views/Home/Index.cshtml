@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnv
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,6 +7,11 @@
 </head>
 <body>
     <h2>Hi there.</h2>
-    Now is @System.DateTime.Now 
+    <h3>Now is @DateTime.Now </h3>
+    <h3>EnvironmentName: @hostingEnv.EnvironmentName</h3>
+    <h3>ApplicationName: @hostingEnv.ApplicationName</h3>
+    <h3>WebRootPath: @hostingEnv.WebRootPath</h3>
+    <h3>ContentRootPath: @hostingEnv.ContentRootPath</h3>
+    <h3>HttpContext.PathBase: @ViewBag.PathBase</h3>
 </body>
 </html>
